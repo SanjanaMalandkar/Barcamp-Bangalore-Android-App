@@ -91,3 +91,4 @@ BCB App Github_6.apk
 
 *.pyc
 *sublime-*
+.idea/
