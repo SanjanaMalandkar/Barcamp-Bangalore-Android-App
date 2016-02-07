@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="menuopen">Navigation Menu Open</string>
+    <string name="menuoclose">Navigation Menu Open</string>
     <string name="app_name">Barcamp Bangalore</string>
     <string name="tweets">Tweets</string>
     <string name="about">About</string>

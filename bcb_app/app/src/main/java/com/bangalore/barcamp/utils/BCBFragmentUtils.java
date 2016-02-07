@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -43,8 +43,7 @@ public class BCBFragmentUtils {
 				.findViewById(R.id.drawer_layout);
 		final ActionBar actionbar = activity.getSupportActionBar();
 		ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-				activity, mDrawerLayout, R.drawable.three_lines, R.string.ok,
-				R.string.close) {
+				activity, mDrawerLayout,R.string.menuopen, R.string.menuoclose) {
 
 			/** Called when a drawer has settled in a completely closed state. */
 			public void onDrawerClosed(View view) {
@@ -70,6 +69,7 @@ public class BCBFragmentUtils {
 
 		actionbar.setDisplayHomeAsUpEnabled(true);
 		actionbar.setHomeButtonEnabled(true);
+
 
 		actionbar.setTitle(drawerTitle);
         activity.supportInvalidateOptionsMenu();

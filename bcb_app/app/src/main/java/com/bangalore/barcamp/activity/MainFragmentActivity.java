@@ -15,7 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -77,6 +77,7 @@ public class MainFragmentActivity extends BCBFragmentActionbarActivity {
 		if (!GCMUtils.isRegistered(this)) {
 			Intent registrationIntent = new Intent(
 					"com.google.android.c2dm.intent.REGISTER");
+			registrationIntent.setPackage("com.google.android");
 			// sets the app name in the intent
 			registrationIntent.putExtra("app",
 					PendingIntent.getBroadcast(this, 0, new Intent(), 0));

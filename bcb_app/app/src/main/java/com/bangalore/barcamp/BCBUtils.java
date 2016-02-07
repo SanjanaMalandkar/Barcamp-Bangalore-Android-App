@@ -197,135 +197,6 @@ public class BCBUtils {
 		}
 	}
 
-	// public static void addNavigationActions(
-	// final BCBActivityBaseClass homeActivity) {
-	// homeActivity.setBehindContentView(R.layout.navigation_menu);
-	// int offset = 100;
-	// DisplayMetrics metrics = new DisplayMetrics();
-	// homeActivity.getWindow().getWindowManager().getDefaultDisplay()
-	// .getMetrics(metrics);
-	// offset = ((metrics.widthPixels * 130)) / 480;
-	//
-	// homeActivity.setBehindOffset(offset);
-	// homeActivity.setBehindScrollScale(0.5f);
-	//
-	// View view = homeActivity.findViewById(R.id.nav_agenda);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity, ScheduleActivity.class);
-	// homeActivity.startActivityForResult(intent, START_SCHEDULE);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_about);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity, AboutActivity.class);
-	// homeActivity.startActivityForResult(intent, START_ABOUT);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_internal_venue_map);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity,
-	// InternalVenueMapActivity.class);
-	// homeActivity.startActivityForResult(intent,
-	// START_INTERNAL_VENUE);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_settings);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity, SettingsActivity.class);
-	// homeActivity.startActivityForResult(intent, START_SETTINGS);
-	// }
-	// });
-	// view.setVisibility(View.GONE);
-	//
-	// view = homeActivity.findViewById(R.id.nav_share);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity, ShareActivity.class);
-	// homeActivity.startActivityForResult(intent, START_SHARE);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_tweets);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity, WebViewActivity.class);
-	// intent.putExtra(WebViewActivity.URL,
-	// "file:///android_asset/bcb11_updates.html");
-	// homeActivity.startActivityForResult(intent, START_BCB12_TWEETS);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_update);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(homeActivity,
-	// UpdateMessagesActivity.class);
-	// homeActivity.startActivityForResult(intent, START_BCB_UPDATES);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_venue);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// final PackageManager pm = homeActivity.getPackageManager();
-	//
-	// Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-	// .parse(BCB_LOCATION_MAPS_URL));
-	// final List<ResolveInfo> matches = pm.queryIntentActivities(
-	// intent, 0);
-	// for (ResolveInfo info : matches) {
-	// Log.e("MapPackage", info.loadLabel(pm) + " "
-	// + info.activityInfo.packageName + " "
-	// + info.activityInfo.name);
-	// if (info.activityInfo.name
-	// .equals("com.google.android.maps.MapsActivity")) {
-	// intent.setClassName("com.google.android.apps.maps",
-	// "com.google.android.maps.MapsActivity");
-	// }
-	// }
-	//
-	// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	// homeActivity.startActivity(intent);
-	// }
-	// });
-	//
-	// view = homeActivity.findViewById(R.id.nav_BCB);
-	// view.setOnClickListener(new OnClickListener() {
-	//
-	// @Override
-	// public void onClick(View v) {
-	// Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-	// .parse("http://barcampbangalore.org"));
-	// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	// homeActivity.startActivity(intent);
-	// }
-	// });
-	//
-	// }
-
 	public static void syncUserScheduleData(Context context) {
 		String userID = BCBSharedPrefUtils.getUserID(context);
 		String userKey = BCBSharedPrefUtils.getUserKey(context);
@@ -415,8 +286,8 @@ public class BCBUtils {
 		int hour = slot.startTime / 100;
 		int mins = slot.startTime % 100;
 		Log.e("Session", "hour : " + hour + " mins :" + mins);
-		GregorianCalendar date = new GregorianCalendar(2015, Calendar.APRIL,
-				18, hour, mins);
+		GregorianCalendar date = new GregorianCalendar(2015, Calendar.NOVEMBER,
+				1, hour, mins);
 		long timeInMills = date.getTimeInMillis() - 300000;
 		alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMills, intent);
 	}

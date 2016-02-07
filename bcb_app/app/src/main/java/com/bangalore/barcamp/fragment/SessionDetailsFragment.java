@@ -293,8 +293,14 @@ public class SessionDetailsFragment extends BCBFragmentBaseClass {
 		SpeakerNameBackgroundDrawable(String color) {
 			mPainter = new Paint();
 			mPainter.setAntiAlias(true);
-			mPainter.setColor(Color.parseColor(color));
-		}
+            try{
+		    	mPainter.setColor(Color.parseColor(color));
+            }
+            catch (Exception e) {
+                Log.e("Drawable Color", "Color parse threw exception ", e);
+            }
+
+        }
 
 		@Override
 		public void draw(Canvas canvas) {

@@ -28,6 +28,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,12 @@ public class SlotItemsListAdapter extends ArrayAdapter<Session> {
 		}
 		if (holder.text2 != null) {
 			holder.text2.setText(session.title + " (" + session.level + ")");
-			holder.text2.setTextColor(Color.parseColor(session.color));
+            try {
+                holder.text2.setTextColor(Color.parseColor(session.color));
+            }
+            catch (Exception e){
+                Log.e("SlotItemListAdapter", "Color parse failed", e);
+            }
 		}
 		if (holder.image != null) {
 			try {
@@ -104,8 +110,12 @@ public class SlotItemsListAdapter extends ArrayAdapter<Session> {
 		public MyDrawable(String color) {
 			mPainter = new Paint();
 			mPainter.setAntiAlias(true);
-			mPainter.setColor(Color.parseColor(color));
-
+            try {
+                mPainter.setColor(Color.parseColor(color));
+            }
+            catch(Exception e){
+                Log.e("Drawable Color", "Color threw exception ", e);
+            }
 		}
 
 		@Override

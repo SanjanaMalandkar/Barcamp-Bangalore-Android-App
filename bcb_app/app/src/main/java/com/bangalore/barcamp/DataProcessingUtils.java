@@ -56,9 +56,9 @@ public class DataProcessingUtils {
 					JSONObject curJsonSlot = jsonSlots.getJSONObject(iCount);
 					Slot slot = new Slot();
 					slot.id = iCount;
-					slot.name = curJsonSlot.getString(SLOT_TITLE);
-					slot.type = curJsonSlot.getString(SLOT_TYPE);
-					slot.startTime = curJsonSlot.getInt(BEGIN_TIME);
+					slot.name = curJsonSlot.optString(SLOT_TITLE);
+					slot.type = curJsonSlot.optString(SLOT_TYPE);
+					slot.startTime = curJsonSlot.optInt(BEGIN_TIME);
 					slot.pos = iCount;
 					if (curJsonSlot.has(SESSIONS)) {
 						JSONArray sessions = curJsonSlot.getJSONArray(SESSIONS);
@@ -67,18 +67,18 @@ public class DataProcessingUtils {
 							Session session = new Session();
 							JSONObject jsonSession = sessions
 									.getJSONObject(jCount);
-							session.id = jsonSession.getString("id");
+							session.id = jsonSession.optString("id");
 							session.location = jsonSession
-									.getString("location");
+									.optString("location");
 							session.pos = jCount;
 							session.presenter = jsonSession
-									.getString("presenter");
-							session.time = jsonSession.getString("time");
+									.optString("presenter");
+							session.time = jsonSession.optString("time");
 							session.title = Html.fromHtml(
-									jsonSession.getString("title")).toString();
+									jsonSession.optString("title")).toString();
 							session.description = jsonSession
-									.getString("description");
-							session.photo = jsonSession.getString("photo");
+									.optString("description");
+							session.photo = jsonSession.optString("photo");
 							session.photo = session.photo.replace("\\/", "");
 							session.photo = session.photo.replace("&amp;", "&");
 							if (session.photo.equals("null"))
