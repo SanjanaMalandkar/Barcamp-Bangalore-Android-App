@@ -41,49 +41,49 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
-
 .controller('SlotsCtrl', function($scope) {
-   $scope.slots =  $data.slots;
-   console.log($data.slots);
+   $scope.slots =  data.slots;
+   console.log(data.slots);
   //$scope.slots = getjson();
 })
 
 .controller('SlotCtrl', function($scope, $stateParams) {
 
-    var slotName = $data['slots'][$stateParams.slotId]['name']
-    var slotType = $data['slots'][$stateParams.slotId]['type']
-    var slotId = $data['slots'][$stateParams.slotId]['id']
-    var startTime = $data['slots'][$stateParams.slotId]['startTime']
-    var endTime = $data['slots'][$stateParams.slotId]['endTime']
+    var slotName = data['slots'][$stateParams.slotId]['name']
+    var slotType = data['slots'][$stateParams.slotId]['type']
+    var slotId = data['slots'][$stateParams.slotId]['id']
+    var startTime = data['slots'][$stateParams.slotId]['startTime']
+    var endTime = data['slots'][$stateParams.slotId]['endTime']
 
     console.log('Slot controller')
     console.log('Slot details: slot id: ' + slotId + ' Name:' + slotName + ' Type:' + slotType
                 + ' Start time:' + startTime + ' End time:' + endTime)
-    if ($data['slots'][$stateParams.slotId]['type'] == 'session') {
-      $scope.sessions = $data['slots'][$stateParams.slotId]['sessions'];
+    if (data['slots'][$stateParams.slotId]['type'] == 'session') {
+      $scope.sessions = data['slots'][$stateParams.slotId]['sessions'];
     }
-    $scope.slotId = $stateParams.slotId;
+    $scope.slotId = $stateParams.slotId
+    console.log("SlotCtrl = " + $scope.slotId);
 
 })
 
 .controller('SessionCtrl', function($scope, $sce, $stateParams) {
     console.log('Single session controller')
-    console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $scope.slotId )
-    $scope.session = $data['slots'][$scope.slotId]['sessions'][$stateParams.slotId];
-    $scope.slotId = $stateParams.slotId;
+    console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
+    console.log(data['slots'][3]);
+    sessions =  data['slots'][$stateParams .slotId]['sessions'];
+    iCount = 0;
+    for(; iCount < sessions.length; iCount++){
+        console.log(sessions[iCount].id);
+        console.log($stateParams.sessionId);
+        if(sessions[iCount].id == $stateParams.sessionId){
+            break;
+        }
+        console.log(iCount);
+    }
+    console.log(iCount);
+    if(iCount < sessions.length){
+        $scope.session = data['slots'][$stateParams .slotId]['sessions'][iCount];
+        $scope.slotId = $stateParams.slotId;
+        console.log($scope);
+    }
 });
-
-

@@ -1,4 +1,4 @@
-$data = {
+data = {
   "status": "have stuff",
   "version": 34,
   "slots": [{
