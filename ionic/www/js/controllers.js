@@ -73,8 +73,6 @@ angular.module('starter.controllers', [])
     sessions =  data['slots'][$stateParams .slotId]['sessions'];
     iCount = 0;
     for(; iCount < sessions.length; iCount++){
-        console.log(sessions[iCount].id);
-        console.log($stateParams.sessionId);
         if(sessions[iCount].id == $stateParams.sessionId){
             break;
         }
