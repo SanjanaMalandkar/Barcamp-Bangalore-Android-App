@@ -1,1 +1,6 @@
-/* Empty. Add your own CSS if you like */
+.burger {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    background-image: url("../img/burger.png") !important;
+    background-size: 100% 100% !important;
+}

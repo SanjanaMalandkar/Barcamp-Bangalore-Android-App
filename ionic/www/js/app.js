@@ -40,6 +40,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+
     .state('app.home', {
       url: '/home',
       views: {
@@ -49,6 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+
     .state('app.slots', {
       url: '/slots/:slotId',
       views: {
@@ -58,6 +60,57 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
+
+    .state('app.tweets', {
+      url: '/tweets',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/tweets.html',
+          controller: 'TweetCtrl'
+        }
+       }
+     })
+
+    .state('app.venue', {
+      url: '/venue',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/venue.html',
+          controller: 'VenueCtrl'
+        }
+       }
+     })
+
+    .state('app.map', {
+      url: '/map',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/map.html',
+          controller: 'MapCtrl'
+        }
+       }
+     })
+
+    .state('app.about', {
+      url: '/about',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/about.html',
+          controller: 'AboutCtrl'
+        }
+       }
+    })
+
+    .state('app.share', {
+      url: '/share',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/share.html',
+          controller: 'ShareCtrl'
+        }
+      }
+    })
+    
     .state('app.session', {
       url: '/slots/:slotId/:sessionId',
       views: {

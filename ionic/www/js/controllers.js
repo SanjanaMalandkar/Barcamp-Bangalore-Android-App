@@ -48,7 +48,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SlotCtrl', function($scope, $stateParams) {
-
     var slotName = data['slots'][$stateParams.slotId]['name']
     var slotType = data['slots'][$stateParams.slotId]['type']
     var slotId = data['slots'][$stateParams.slotId]['id']
