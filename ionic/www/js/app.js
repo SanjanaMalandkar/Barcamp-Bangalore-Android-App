@@ -103,12 +103,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
 
     .state('app.share', {
       url: '/share',
-      cache: false,
-      views: {
-        'menuContent': {
-          controller: 'ShareCtrl'
-        }
-      }
+      cache: false
     })
     
     .state('app.session', {
