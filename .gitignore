@@ -93,3 +93,6 @@ BCB App Github_6.apk
 *.pyc
 *sublime-*
 .idea/
+ionic/www/lib/
+ionic/node_modules/
+ionic/my-release-key.keystore

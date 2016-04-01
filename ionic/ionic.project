@@ -1,5 +1,5 @@
 {
-  "name": "Barcamp Bangalore",
+  "name": "bcb-ionic",
   "app_id": "",
   "gulpStartupTasks": [
     "sass",

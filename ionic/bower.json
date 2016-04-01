@@ -1,7 +1,29 @@
 {
-  "name": "HelloIonic",
-  "private": "true",
+  "name": "Barcamp Bangalore",
+  "private": true,
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.0"
+  },
+  "homepage": "https://github.com/BarcampBangalore/Barcamp-Bangalore-Android-App",
+  "authors": [
+    "SathyaBhat <sathya@sathyasays.com>"
+  ],
+  "description": "Bangalore Bangalore App",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-sanitize": "1.4.3",
+    "ngCordova": "^0.1.24-alpha",
+    "angular-animate": "1.4.3",
+    "angular-ui-router": "0.2.13"
   }
 }

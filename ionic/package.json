@@ -1,5 +1,5 @@
 {
-  "name": "Barcamp Bangalore",
+  "name": "bcb-ionic",
   "version": "1.2.0",
   "description": "Barcamp Bangalore",
   "dependencies": {
@@ -20,7 +20,8 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "SocialSharing-PhoneGap-Plugin"
   ],
   "cordovaPlatforms": [
     "ios",

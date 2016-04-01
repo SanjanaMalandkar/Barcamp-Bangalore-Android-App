@@ -65,6 +65,19 @@ angular.module('starter.controllers', [])
 
 })
 
+.controller('ShareCtrl', function($scope, $cordovaSocialSharing) {
+    console.log('Share controller')
+    var message = "I'm at #barcampblr. Looking forward to it!"
+    $cordovaSocialSharing
+    .share(message, null, null, null) // Share via native share sheet
+    .then(function(result) {
+      console.log('Shared!')
+    }, function(err) {
+      console.log('Error')
+    });
+
+})
+
 .controller('SessionCtrl', function($scope, $sce, $stateParams) {
     console.log('Single session controller')
     console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
@@ -84,3 +97,4 @@ angular.module('starter.controllers', [])
         console.log($scope);
     }
 });
+
