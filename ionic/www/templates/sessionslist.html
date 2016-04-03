@@ -1,9 +1,33 @@
 <ion-view view-title="Slot Details">
   <ion-content>
+    <!--
     <ion-list>
-        <ion-item ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">
+    -->
+
+      <ul class="list">
+      <div class="item energized-bg">
+        {{ slotName }}
+
+        <span class="item-note">
+          {{ startTime }} - {{ endTime }}
+        </span>
+      </div>
+      <a class="item positive-bg" ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">
+
           {{session.title}}
+
+           <span class="item-note">
+             {{session.presenter}} @ {{session.location}}
+           </span>
+      </a>
+      </ul>
+
+      <!--
+        <ion-item ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">
+
         </ion-item>
+
       </ion-list>
+    -->
     </ion-content>
 </ion-view>

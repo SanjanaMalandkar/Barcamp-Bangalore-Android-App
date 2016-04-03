@@ -46,7 +46,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       views: {
         'menuContent': {
           templateUrl: 'templates/home.html',
-          controller: 'SlotsCtrl'
+          controller: 'HomeCtrl'
         }
       }
     })
@@ -105,7 +105,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngCordova'])
       url: '/share',
       cache: false
     })
-    
+
     .state('app.session', {
       url: '/slots/:slotId/:sessionId',
       views: {

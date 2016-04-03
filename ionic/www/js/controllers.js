@@ -25,10 +25,24 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('SlotsCtrl', function($scope) {
+.controller('HomeCtrl', function($scope) {
    $scope.slots =  data.slots;
    console.log(data.slots);
   //$scope.slots = getjson();
+
+  $scope.getItemColor = function(slot) {
+
+    if(slot.type == "fixed" && slot.name == "Techlash") {
+      return "assertive-bg";
+    }
+    else if(slot.type == "fixed") {
+      return "energized-bg";
+    }
+    else {
+      return "positive-bg";
+    }
+
+  }
 })
 
 .controller('SlotCtrl', function($scope, $stateParams) {
@@ -38,10 +52,15 @@ angular.module('starter.controllers', [])
     var startTime = data['slots'][$stateParams.slotId]['startTime']
     var endTime = data['slots'][$stateParams.slotId]['endTime']
 
-    console.log('Slot controller')
+    console.log('Slot controller');
     console.log('Slot details: slot id: ' + slotId + ' Name:' + slotName + ' Type:' + slotType
-                + ' Start time:' + startTime + ' End time:' + endTime)
-    if (data['slots'][$stateParams.slotId]['type'] == 'session') {
+                + ' Start time:' + startTime + ' End time:' + endTime);
+
+    var slot = data['slots'][$stateParams.slotId];
+    if (slot['type'] == 'session') {
+      $scope.startTime = slot.startTime;
+      $scope.endTime = slot.endTime;
+      $scope.slotName = slot.name;
       $scope.sessions = data['slots'][$stateParams.slotId]['sessions'];
     }
     $scope.slotId = $stateParams.slotId
@@ -81,4 +100,3 @@ angular.module('starter.controllers', [])
         console.log($scope);
     }
 });
-

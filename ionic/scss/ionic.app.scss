@@ -18,6 +18,46 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
+$stable:                          #E5E5E5 !default;
+$positive:                        #96C3D8 !default;
+$energized:                       #FC922E !default;
+$assertive:                       #F45668 !default;
+
+$font-family-base: "Roboto", sans-serif !default;
+
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.burger {
+    min-width: 32px !important;
+    min-height: 32px !important;
+    background-image: url("../img/burger.png") !important;
+    background-size: 100% 100% !important;
+}
+
+
+.rotate {
+  -webkit-transform: translate(0, 1em) rotate(-90deg);
+   -moz-transform: translate(0, 1em) rotate(-90deg);
+   -ms-transform: translate(0, 1em) rotate(-90deg);
+   -o-transform: translate(0, 1em) rotate(-90deg);
+   transform: translate(0, 1em) rotate(-90deg);
+
+  -webkit-transform-origin: bottom left;
+  -moz-transform-origin: bottom left;
+  -ms-transform-origin: bottom left;
+  -o-transform-origin: bottom left;
+  transform-origin: bottom left;
+}
+
+.item {
+  padding-left : 32px;
+}
+
+.pad-item {
+  padding-left : 16px;
+}
+
+.item-note {
+  color : #000; 
+}

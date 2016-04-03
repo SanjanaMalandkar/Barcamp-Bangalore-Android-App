@@ -1,9 +1,15 @@
-<ion-view view-title="Home"> 
+ <ion-view view-title="Barcamp Bangalore">
   <ion-content>
-    <ion-list>
-        <ion-item ng-repeat="slot in slots" href="#/app/slots/{{slot.id}}">
-          {{slot.startTime}} to {{slot.endTime}} - {{slot.name}}
-        </ion-item>
-      </ion-list>
+
+    <ul class="list">
+    <a class="item" ng-repeat="slot in slots" href="#/app/slots/{{slot.id}}" ng-class="getItemColor(slot)">
+      <div class="rotate"> {{ slot.startTime }} </div>
+      <span class="pad-item">
+       {{slot.name}}
+      </span>
+      <!--  to {{slot.endTime}} - -->
+    </a>
+    </ul>
+
     </ion-content>
 </ion-view>
