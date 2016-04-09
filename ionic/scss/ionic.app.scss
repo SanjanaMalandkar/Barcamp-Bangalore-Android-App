@@ -50,14 +50,19 @@ $font-family-base: "Roboto", sans-serif !default;
   transform-origin: bottom left;
 }
 
-.item {
+.slot {
   padding-left : 32px;
 }
 
-.pad-item {
+.slot-name {
   padding-left : 16px;
 }
 
+.bar-icons {
+  min-height: 48px;
+  font-size:32px;
+  margin-left: 16px; 
+}
 .item-note {
-  color : #000; 
+  color : #000;
 }

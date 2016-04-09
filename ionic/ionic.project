@@ -1,6 +1,6 @@
 {
   "name": "bcb-ionic",
-  "app_id": "",
+  "app_id": "7291377e",
   "gulpStartupTasks": [
     "sass",
     "watch"

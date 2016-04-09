@@ -2,7 +2,8 @@
   "name": "Barcamp Bangalore",
   "private": true,
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.0"
+    "ionic": "driftyco/ionic-bower#1.2.0",
+    "ionic-platform-web-client": "^0.7.1"
   },
   "homepage": "https://github.com/BarcampBangalore/Barcamp-Bangalore-Android-App",
   "authors": [

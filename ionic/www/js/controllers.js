@@ -82,21 +82,38 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SessionCtrl', function($scope, $sce, $stateParams) {
-    console.log('Single session controller')
-    console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
-    console.log(data['slots'][3]);
+    //console.log('Single session controller')
+    //console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
+    //console.log(data['slots'][3]);
     sessions =  data['slots'][$stateParams .slotId]['sessions'];
     iCount = 0;
     for(; iCount < sessions.length; iCount++){
         if(sessions[iCount].id == $stateParams.sessionId){
             break;
         }
-        console.log(iCount);
+        //console.log(iCount);
     }
     console.log(iCount);
+
     if(iCount < sessions.length){
         $scope.session = data['slots'][$stateParams .slotId]['sessions'][iCount];
         $scope.slotId = $stateParams.slotId;
         console.log($scope);
     }
-});
+})
+
+.controller('VenueCtrl', function($scope) {
+})
+
+.controller('VenueMapCtrl', function($scope) {
+})
+
+.controller('AboutCtrl', function($scope) {
+
+})
+
+.controller('TweetCtrl', function($scope) {
+
+})
+
+;

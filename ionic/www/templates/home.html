@@ -2,9 +2,9 @@
   <ion-content>
 
     <ul class="list">
-    <a class="item" ng-repeat="slot in slots" href="#/app/slots/{{slot.id}}" ng-class="getItemColor(slot)">
+    <a class="slot item" ng-repeat="slot in slots" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
       <div class="rotate"> {{ slot.startTime }} </div>
-      <span class="pad-item">
+      <span class="slot-name">
        {{slot.name}}
       </span>
       <!--  to {{slot.endTime}} - -->

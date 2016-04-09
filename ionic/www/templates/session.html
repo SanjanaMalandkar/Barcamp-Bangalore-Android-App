@@ -1,8 +1,34 @@
 <ion-view view-title="Session Details">
   <ion-content>
-      <h2>{{session.title}}</h2><br/>
+
+    <div class="list card">
+
+      <div class="item item-avatar" ng-style="{'background-color' : '{{session.color}}' }">
+        <img src="{{session.photo}}">
+        <h2>{{ session.title }}</h2>
+        <p>{{ session.location }} </p>
+      </div>
+
+      <div class="item item-body">
+        <p>
+          {{ session.description }}
+        </p>
+        <p>
+
+          <div class="row">
+            <div class="col text-right">
+              <a href="#"> <i class="icon ion-heart bar-icons"></i> </a>
+              <a href="#"> <i class="icon ion-share bar-icons"></i> </a>
+            </div>
+          </div>
+        </p>
+      </div>
+
+    </div>
+    <!--
+   <h2>{{session.title}}</h2><br/>
    <div id="session-details">{{session.description}}
    </div>
-
+ -->
   </ion-content>
 </ion-view>
