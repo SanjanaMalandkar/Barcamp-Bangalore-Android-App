@@ -22,13 +22,7 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "SocialSharing-PhoneGap-Plugin",
-    {
-      "variables": {
-        "SENDER_ID": "432833479921"
-      },
-      "locator": "phonegap-plugin-push",
-      "id": "phonegap-plugin-push"
-    }
+    "onesignal-cordova-plugin"
   ],
   "cordovaPlatforms": [
     "ios",

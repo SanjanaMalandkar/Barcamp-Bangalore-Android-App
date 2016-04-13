@@ -10,15 +10,15 @@
       </div>
 
       <div class="item item-body">
-        <p>
-          {{ session.description }}
+        <p ng-bind-html= "session.description">
+
         </p>
         <p>
 
           <div class="row">
             <div class="col text-right">
               <a href="#"> <i class="icon ion-heart bar-icons"></i> </a>
-              <a href="#"> <i class="icon ion-share bar-icons"></i> </a>
+              <a ng-click="shareSession()"> <i class="icon ion-share bar-icons"></i> </a>
             </div>
           </div>
         </p>

@@ -4,11 +4,26 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
 
+    // Enable to debug issues.
+      // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+      var notificationOpenedCallback = function(jsonData) {
+        console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
+      };
+
+      window.plugins.OneSignal.init("785e0c26-f6e8-419d-adec-6821366ac4a0",
+                                     {googleProjectNumber: "432833479921"},
+                                     notificationOpenedCallback);
+
+      // Show an alert box if a notification comes in when the user is in your app.
+      window.plugins.OneSignal.enableInAppAlertNotification(true);
+
+    /*
     var push = new Ionic.Push({
       "debug": true
     });
@@ -16,9 +31,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
     push.register(function(token) {
       //alert(token.token);
       console.log("Device token: " + token.token ,token.token);
-      push.saveToken(token);  
+      push.saveToken(token);
     });
-
+    */
     /*
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -82,7 +97,8 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       views: {
         'menuContent': {
           templateUrl: 'templates/tweets.html',
-          controller: 'TweetCtrl'
+          controller: 'TweetCtrl',
+          cache: false
         }
        }
      })

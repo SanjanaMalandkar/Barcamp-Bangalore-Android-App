@@ -9762,3 +9762,9 @@ a.button {
 
 .item-note {
   color: #000; }
+
+.fit-screen {
+  max-width: 100%; }
+
+.item .session-title {
+  white-space: normal; }

@@ -1,15 +1,29 @@
- <ion-view view-title="Barcamp Bangalore">
+<ion-view view-title="Barcamp Bangalore">
   <ion-content>
 
+
     <ul class="list">
-    <a class="slot item" ng-repeat="slot in slots" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
-      <div class="rotate"> {{ slot.startTime }} </div>
-      <span class="slot-name">
-       {{slot.name}}
-      </span>
-      <!--  to {{slot.endTime}} - -->
-    </a>
+      <div ng-repeat="slot in data.slots">
+        <a ng-if="slot.type != 'fixed'" class="slot item" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
+          <!--  to {{slot.endTime}} - -->
+          <div class="rotate"> {{ slot.startTime }} </div>
+          <span class="slot-name">
+            {{slot.name}}
+          </span>
+        </a>
+        <div ng-if="slot.type == 'fixed'" class="slot item" ng-class="getItemColor(slot)">
+          <!--  to {{slot.endTime}} - -->
+          <div class="rotate"> {{ slot.startTime }} </div>
+          <h2 class="slot-name">
+            {{slot.name}}
+          </h2>
+        </div>
+      </div>
     </ul>
 
-    </ion-content>
+    <h2 ng-show="errorData">
+      Sorry, unable to get the data from the server. Are you connected to the internet ?
+    </h2>
+
+  </ion-content>
 </ion-view>
