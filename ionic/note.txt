@@ -1,0 +1,5 @@
+bcbapp://android?id=eswarm&sid=8kukfo7ctsf76bng1f5jbuqcq5
+
+AUTH : http://barcampbangalore.org/bcb/wp-login_android.php?redirect_to=http%3A%2F%2Fbarcampbangalore.org%2Fbcb%2Fwp-android_helper.php%3Faction%3Dauth
+
+http://barcampbangalore.org/bcb/wp-android_helper.php?action=setuserdata&userid=%s&userkey=%s&sessionid=%s&isattending=%s

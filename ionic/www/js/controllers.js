@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $cordovaSocialSharing, $timeout) {
+.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, $localstorage) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -19,6 +19,89 @@ angular.module('starter.controllers', [])
       }, function(err) {
         console.log('Error')
       });
+  };
+
+  function isValid(url) {
+    if (url.startsWith("bcbapp")) {
+      return true;
+    }
+    return false;
+  };
+
+  function getLoginParams(url) {
+    var login = {
+      user_name: "",
+      id: ""
+    };
+    try {
+      if (!isValid(url)) {
+        return login;
+      } else {
+        var search = url.substr(url.indexOf("?") + 1);
+        var params = search.split("&");
+        var p1 = params[0].split("=");
+        var p2 = params[1].split("=");
+        if (p1[0] === "id") {
+          login.user_name = p1[1];
+        }
+        if (p2[0] == "sid") {
+          login.id = p2[1];
+        }
+      }
+    } catch (e) {
+      console.log("Error parsing url");
+    }
+    return login;
+  };
+
+  function urlChanged(url) {
+    console.log("urlChanged " + url);
+    if(isValid(url)) {
+      var login_details = getLoginParams(url);
+      alert(login_details.user_name + " " + login_details.id);
+      $localstorage.setObject(login_details);
+      $cordovaInAppBrowser.close();
+    }
+  };
+
+  $scope.login = function() {
+    console.log("in login");
+    $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event) {
+      urlChanged(event.url);
+    });
+
+    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event) {
+      //urlChanged(event.url);
+    });
+
+    $rootScope.$on('$cordovaInAppBrowser:loaderror', function(e, event) {
+      urlChanged(event.url);
+    });
+
+    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event) {
+
+    });
+
+    var options = {
+      location: 'no',
+      clearcache: 'no',
+      toolbar: 'no'
+    };
+
+
+
+    var browser = $cordovaInAppBrowser.open('http://barcampbangalore.org/bcb/wp-login_android.php?redirect_to=http%3A%2F%2Fbarcampbangalore.org%2Fbcb%2Fwp-android_helper.php%3Faction%3Dauth', '_blank', options)
+      .then(function(event) {
+        // success
+        console.log("success " + event);
+      })
+      .catch(function(event) {
+        // error
+        console.log("failed " + event);
+      });
+
+    console.log(typeof(browser) + browser);
+
   };
 })
 
@@ -78,7 +161,7 @@ angular.module('starter.controllers', [])
       var localData = $localstorage.getObject("localData");
       console.log(typeof localData["date"]);
       var local_date = new Date(localData["date"]);
-      if(resp_date.getTime() > local_date.getTime() ) {
+      if (resp_date.getTime() > local_date.getTime()) {
         console.log("getting the data again");
         getData();
       }
@@ -214,6 +297,10 @@ angular.module('starter.controllers', [])
 .controller('VenueMapCtrl', function($scope) {})
 
 .controller('AboutCtrl', function($scope) {
+
+})
+
+.controller('LoginCtrl', function($scope) {
 
 })
 

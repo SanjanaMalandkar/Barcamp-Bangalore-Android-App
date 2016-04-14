@@ -9753,7 +9753,8 @@ a.button {
   padding-left: 32px; }
 
 .slot-name {
-  padding-left: 16px; }
+  padding-left: 16px;
+  font-weight: bold; }
 
 .bar-icons {
   min-height: 48px;
@@ -9768,3 +9769,12 @@ a.button {
 
 .item .session-title {
   white-space: normal; }
+
+.item {
+  border-color: #727168; }
+
+.vertical-line {
+  border-left: thin solid #727168; }
+
+.header-img {
+  height: 100%; }
