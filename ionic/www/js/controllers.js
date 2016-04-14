@@ -100,9 +100,35 @@ angular.module('starter.controllers', [])
         console.log("failed " + event);
       });
 
-    console.log(typeof(browser) + browser);
+  };
+
+  $scope.openTwitter = function(url) {
+
+    var options = {
+      location: 'no',
+      clearcache: 'no',
+      toolbar: 'no'
+    };
+
+    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event) {
+      $cordovaInAppBrowser.executeScript({
+        file: 'twitter_clean.js'
+      });
+    });
+
+    var url = "https://twitter.com/search?q=barcampbng%20OR%20%22barcamp%20bangalore%22%20OR%20%23barcampblr%20OR%20barcampblr";
+    var browser = $cordovaInAppBrowser.open(url, '_blank', options)
+      .then(function(event) {
+        // success
+        console.log("success " + event);
+      })
+      .catch(function(event) {
+        // error
+        console.log("failed " + event);
+      });
 
   };
+
 })
 
 .controller('HomeCtrl', function($scope, $rootScope, $http, $localstorage) {
