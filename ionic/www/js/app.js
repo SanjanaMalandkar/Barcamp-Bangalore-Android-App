@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, syncService) {
   $ionicPlatform.ready(function() {
 
     // Enable to debug issues.
@@ -14,6 +14,9 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
 
       var notificationOpenedCallback = function(jsonData) {
         console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
+        //if(jsonData.title.toLowerCase() === "sessions updated") {
+          $rootScope.$broadcast('app:notification', {data:jsonData});
+        //}
       };
 
       window.plugins.OneSignal.init("785e0c26-f6e8-419d-adec-6821366ac4a0",

@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, $localstorage) {
+.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, localstorage) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -59,7 +59,7 @@ angular.module('starter.controllers', [])
     if(isValid(url)) {
       var login_details = getLoginParams(url);
       alert(login_details.user_name + " " + login_details.id);
-      $localstorage.setObject(login_details);
+      localstorage.setObject(login_details);
       $cordovaInAppBrowser.close();
     }
   };
@@ -131,71 +131,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HomeCtrl', function($scope, $rootScope, $http, $localstorage) {
+.controller('HomeCtrl', function($scope, $rootScope, $http, syncService, localstorage) {
 
   $scope.errorData = false;
-  //console.log(data.slots);
-  //$scope.slots = getjson();
-  $scope.getData = function() {
 
-    $http({
-      method: 'GET',
-      url: 'https://barcampbangalore.org/bcb/schadmin/android.json'
-    }).then(function successCallback(response) {
-
-      console.log("Got the data");
-      if (response.data["status"] !== "have stuff") {
-        $rootScope.data_status = "slots_undecided";
-      } else {
-        $rootScope.data_status = "slots_set";
-      }
-
-      $rootScope.data = response.data;
-      //$scope.slots = $rootScope.data.slots;
-
-      console.log(response.headers());
-      console.log(response.headers("Last-Modified") + " " + response.headers("etag"));
-
-      var localData = {};
-
-      if (angular.isUndefined(response.headers("Last-Modified"))) {
-        localData["date"] = new Date();
-      } else {
-        localData["date"] = new Date(response.headers("Last-Modified"));
-      }
-
-      localData["data"] = response.data;
-
-      $localstorage.setObject("localData", localData);
-
-    }, function errorCallback(response) {
-      $scope.errorData = true;
-      console.log("Unable to get the data");
-    });
-
-  };
-
-  $scope.checkModified = function() {
-
-    $http.head(
-      'https://barcampbangalore.org/bcb/schadmin/android.json'
-    ).then(function successCallback(response) {
-
-      console.log("Got the headers");
-      console.log(response.headers());
-      var resp_date = new Date(response.headers("Last-Modified"));
-      var localData = $localstorage.getObject("localData");
-      console.log(typeof localData["date"]);
-      var local_date = new Date(localData["date"]);
-      if (resp_date.getTime() > local_date.getTime()) {
-        console.log("getting the data again");
-        getData();
-      }
-    }, function errorCallback(response) {
-
-    });
-
-  };
+  $scope.$watch('data', function() {
+    console.log("Scope data updated from rootscope");
+    $scope.data = $rootScope.data;
+  }, true);
 
   $scope.getItemColor = function(slot) {
     if (slot.type == "fixed" && slot.name == "Techlash") {
@@ -207,41 +150,69 @@ angular.module('starter.controllers', [])
     }
   };
 
-  //$scope.slots =  data.slots;
-  var localData = $localstorage.getObject("localData");
+  //var localData = localstorage.getObject("localData");
+  var localStorage = localstorage.getObject("localData");
+  console.log(localStorage);
+
+  // get local data first if present
+  $rootScope.data = localStorage["data"];
+
+  // seek data from the server.
+  var getDataAsync = syncService.getData();
+   getDataAsync.then(
+    function success(message) {
+      console.log("session data obtained");
+      $scope.success_message = message;
+    },
+    function failed(message) {
+      console.log("session data failed");
+      $scope.error_message = message;
+    }
+  );
+/*
+  var userSessionAsync = syncService.getUserSessions();
+  userSessionAsync.then(
+    function success(message) {
+      console.log("user sessions obtained");
+    },
+    function failed(message) {
+      console.log("user sessions failed");
+    }
+  );
+  */
+  /*
   if (angular.isUndefined(localData["date"])) {
     $scope.getData();
   } else {
-    var localStorage = $localstorage.getObject("localData");
-    console.log(localStorage);
-    $rootScope.data = localStorage["data"];
-    $scope.checkModified();
-  }
+    }
+  */
 
 })
 
-.controller('SlotCtrl', function($scope, $stateParams) {
+.controller('SlotCtrl', function($scope, $stateParams, $rootScope) {
 
-  if (angular.isUndefined(data['slots'][$stateParams.slotId])) {
+  //console.log($rootScope.data);
+
+  if (angular.isUndefined( $rootScope.data['slots'][$stateParams.slotId])) {
     console.log('No slot id');
     return;
   }
 
-  var slotName = data['slots'][$stateParams.slotId]['name']
-  var slotType = data['slots'][$stateParams.slotId]['type']
-  var slotId = data['slots'][$stateParams.slotId]['id']
-  var startTime = data['slots'][$stateParams.slotId]['startTime']
-  var endTime = data['slots'][$stateParams.slotId]['endTime']
+  var slotName = $rootScope.data['slots'][$stateParams.slotId]['name']
+  var slotType = $rootScope.data['slots'][$stateParams.slotId]['type']
+  var slotId = $rootScope.data['slots'][$stateParams.slotId]['id']
+  var startTime = $rootScope.data['slots'][$stateParams.slotId]['startTime']
+  var endTime = $rootScope.data['slots'][$stateParams.slotId]['endTime']
 
   console.log('Slot controller');
   console.log('Slot details: slot id: ' + slotId + ' Name:' + slotName + ' Type:' + slotType + ' Start time:' + startTime + ' End time:' + endTime);
 
-  var slot = data['slots'][$stateParams.slotId];
+  var slot = $rootScope.data['slots'][$stateParams.slotId];
   if (slot['type'] == 'session') {
     $scope.startTime = slot.startTime;
     $scope.endTime = slot.endTime;
     $scope.slotName = slot.name;
-    $scope.sessions = data['slots'][$stateParams.slotId]['sessions'];
+    $scope.sessions = $rootScope.data['slots'][$stateParams.slotId]['sessions'];
   }
   $scope.slotId = $stateParams.slotId
   console.log("SlotCtrl = " + $scope.slotId);
@@ -261,12 +232,12 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing) {
+.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing, $rootScope) {
   //console.log('Single session controller')
   //console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
   //console.log(data['slots'][3]);
-  sessions = data['slots'][$stateParams.slotId]['sessions'];
-  iCount = 0;
+  var sessions = $rootScope.data['slots'][$stateParams.slotId]['sessions'];
+  var iCount = 0;
   for (; iCount < sessions.length; iCount++) {
     if (sessions[iCount].id == $stateParams.sessionId) {
       break;
@@ -276,9 +247,9 @@ angular.module('starter.controllers', [])
   console.log(iCount);
 
   if (iCount < sessions.length) {
-    $scope.session = data['slots'][$stateParams.slotId]['sessions'][iCount];
+    $scope.session = $rootScope.data['slots'][$stateParams.slotId]['sessions'][iCount];
     $scope.slotId = $stateParams.slotId;
-    console.log($scope);
+    //console.log($scope);
   }
 
   $scope.shareSession = function() {

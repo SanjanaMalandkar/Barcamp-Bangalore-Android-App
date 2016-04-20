@@ -4,5 +4,23 @@ AUTH : http://barcampbangalore.org/bcb/wp-login_android.php?redirect_to=http%3A%
 
 http://barcampbangalore.org/bcb/wp-android_helper.php?action=setuserdata&userid=%s&userkey=%s&sessionid=%s&isattending=%s
 
+https://barcampbangalore.org/bcb/wp-android_helper.php?action=getuserdata&userid=eswarm&userkey=8kukfo7ctsf76bng1f5jbuqcq5
+
 $(".universal-search-users").remove();
 $(".reload-box").remove();
+
+{
+    data: [{
+        title: 'Distributed Realtime Computation using Apache Storm',
+        id: '5815'
+    }, {
+        title: 'Cross Platform Mobile Apps with Ionic',
+        id: '5823'
+    }, {
+        title: 'Orchestrating the command line',
+        id: '5852'
+    }, {
+        title: 'JavaScript, IoT on ESP8266 Micro Controller',
+        id: '5928'
+    }]
+}
