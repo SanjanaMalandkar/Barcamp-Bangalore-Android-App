@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, localstorage) {
+.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, localstorage, syncService, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -58,8 +58,15 @@ angular.module('starter.controllers', [])
     console.log("urlChanged " + url);
     if(isValid(url)) {
       var login_details = getLoginParams(url);
-      alert(login_details.user_name + " " + login_details.id);
-      localstorage.setObject(login_details);
+      //alert(login_details.user_name + " " + login_details.id);
+      /*
+      $state.transitionTo($state.current, $state.params, {
+        reload: true,
+        inherit: false,
+        notify: true
+        });
+        */
+      localstorage.setObject("login_details", login_details);
       $cordovaInAppBrowser.close();
     }
   };
@@ -129,16 +136,19 @@ angular.module('starter.controllers', [])
 
   };
 
+  $scope.isAuthenticated = function() {
+    return syncService.isAuthenticated();
+  };
+
+  $scope.logout = function() {
+  syncService.logout();
+  };
+
 })
 
-.controller('HomeCtrl', function($scope, $rootScope, $http, syncService, localstorage) {
+.controller('HomeCtrl', function($scope, $rootScope, $http, syncService, localstorage, $ionicLoading) {
 
   $scope.errorData = false;
-
-  $scope.$watch('data', function() {
-    console.log("Scope data updated from rootscope");
-    $scope.data = $rootScope.data;
-  }, true);
 
   $scope.getItemColor = function(slot) {
     if (slot.type == "fixed" && slot.name == "Techlash") {
@@ -156,17 +166,29 @@ angular.module('starter.controllers', [])
 
   // get local data first if present
   $rootScope.data = localStorage["data"];
+  $scope.data = $rootScope.data;
 
   // seek data from the server.
+  $ionicLoading.show({
+      template: 'Getting sessions ...'
+    });
+
   var getDataAsync = syncService.getData();
    getDataAsync.then(
     function success(message) {
       console.log("session data obtained");
+      $scope.data = $rootScope.data;
       $scope.success_message = message;
+      $ionicLoading.hide();
     },
     function failed(message) {
       console.log("session data failed");
       $scope.error_message = message;
+      $ionicLoading.hide();
+      if(!$rootScope.data) {
+        $scope.errorData = true;
+      }
+
     }
   );
 /*

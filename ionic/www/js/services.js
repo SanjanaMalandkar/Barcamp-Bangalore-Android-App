@@ -1,6 +1,6 @@
-angular.module('utils', [])
+var utilsModule = angular.module('utils', []);
 
-.factory('localstorage', ['$window', function($window) {
+utilsModule.factory('localstorage', ['$window', function($window) {
   return {
     set: function(key, value) {
       $window.localStorage[key] = value;
@@ -15,9 +15,9 @@ angular.module('utils', [])
       return JSON.parse($window.localStorage[key] || '{}');
     }
   }
-}])
+}]);
 
-.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q) {
+utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q) {
   var syncService = {};
 
   function getJSON(deferred) {
@@ -53,9 +53,10 @@ angular.module('utils', [])
       localstorage.setObject("localData", localData);
       deferred.resolve("Got the data");
     }, function errorCallback(response) {
-      $scope.errorData = true;
+      console.log("Unable to get the data " + response.data + " " + response.status );
+      //$scope.errorData = true;
       deferred.reject("Sorry unable to get the data " + response );
-      console.log("Unable to get the data");
+      // console.log("Unable to get the data");
     });
   };
 
@@ -94,7 +95,8 @@ angular.module('utils', [])
     var deferred = $q.defer();
 
     var login_details = localstorage.getObject("login_details");
-    if(angular.isUndefined(login_details.user_name) || angular.isUndefined(login_details.id))
+
+    if(this.isAuthenticated() == false)
       return;
 
     url_user = 'https://barcampbangalore.org/bcb/wp-android_helper.php?action=getuserdata&' + 'userid=' + login_details.user_name + '&userkey=' + login_details.id;
@@ -167,6 +169,19 @@ angular.module('utils', [])
         scheduleNotification(time_offset, us.id, us.title, us.location + " is hosting " + us.title + " by " + us.presenter);
     }
 
+  };
+
+  syncService.isAuthenticated = function() {
+    var login_details = localstorage.getObject("login_details");
+    //console.log(login_details);
+    if(angular.isUndefined(login_details.user_name) || angular.isUndefined(login_details.id))
+      return false;
+    return true;
+  };
+
+  syncService.logout = function() {
+    var login_details = {};
+    localstorage.setObject("login_details", login_details);
   };
 
   return syncService;

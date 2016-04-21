@@ -20,7 +20,7 @@
     </ion-header-bar>
     <ion-content class="energized-bg">
       <ul class="list">
-        <a class="item positive-bg" menu-close ng-click="login()">
+        <a class="item positive-bg" menu-close ng-click="login()" ng-hide="isAuthenticated()">
           Login
         </a>
         <a class="item positive-bg" menu-close href="#/app/home">
@@ -35,11 +35,14 @@
         <a class="item positive-bg" menu-close href="#/app/map">
           Venue Map
         </a>
+        <a class="item positive-bg" menu-close ng-click="doShare()">
+          Share
+        </a>
         <a class="item positive-bg" menu-close href="#/app/about">
           About
         </a>
-        <a class="item positive-bg" menu-close ng-click="doShare()">
-          Share
+        <a class="item positive-bg" menu-close ng-show="isAuthenticated()" ng-click="logout()">
+          Logout
         </a>
       </ul>
     </ion-content>
