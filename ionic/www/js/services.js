@@ -17,8 +17,8 @@ utilsModule.factory('localstorage', ['$window', function($window) {
   }
 }]);
 
-utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q) {
-  var syncService = {};
+utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q) {
+  var AppService = {};
 
   function getJSON(deferred) {
     $http({
@@ -64,7 +64,7 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
   /*
   // Not using this currently, otherwise would just retrieve the header instead
   // of the whole data.
-  syncService.checkModified = function(deferred) {
+  AppService.checkModified = function(deferred) {
     $http.head(
       'https://barcampbangalore.org/bcb/schadmin/android.json'
     ).then(function successCallback(response) {
@@ -76,7 +76,7 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
       var local_date = new Date(localData["date"]);
       if (resp_date.getTime() > local_date.getTime()) {
         console.log("getting the data again");
-        getData(deferred);
+        getDataServer(deferred);
       }
     }, function errorCallback(response) {
         deferred.reject("Sorry, unable to get the data " + response);
@@ -84,13 +84,47 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
   };
   */
 
-  syncService.getData = function() {
+  AppService.getDataServer = function() {
       var deferred = $q.defer();
       getJSON(deferred);
       return deferred.promise;
   };
 
-  syncService.getUserSessions = function() {
+  AppService.getDataLocal = function() {
+    return localstorage.getObject("localData");
+  };
+
+  AppService.getSlot = function(slotId) {
+    data = localstorage.getObject("localData");
+    return data["data"]["slots"][slotId];
+  }
+
+  AppService.getSession = function(slotId, sessionId) {
+
+    var data = AppService.getDataLocal();
+    console.log(slotId, sessionId);
+    var slot = this.getSlot(slotId);
+    var sessions = slot['sessions'];
+    var iCount = 0;
+    for (; iCount < sessions.length; iCount++) {
+      if (sessions[iCount].id == sessionId) {
+        break;
+      }
+      //console.log(iCount);
+    }
+
+    console.log(iCount);
+    var session;
+    if (iCount < sessions.length) {
+      session = sessions[iCount];
+      //$scope.slotId = $stateParams.slotId;
+      //console.log($scope);
+    }
+    return session;
+  };
+
+
+  AppService.getUserSessions = function() {
 
     var deferred = $q.defer();
 
@@ -141,7 +175,7 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
     });
     };
 
-  syncService.addNotificationsForSessions = function() {
+  AppService.addNotificationsForSessions = function() {
 
     var user_sessions = localstorage.getObject("user_sessions");
     var total_sessions = localstorage.getObject("localData")["data"];
@@ -171,7 +205,7 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
 
   };
 
-  syncService.isAuthenticated = function() {
+  AppService.isAuthenticated = function() {
     var login_details = localstorage.getObject("login_details");
     //console.log(login_details);
     if(angular.isUndefined(login_details.user_name) || angular.isUndefined(login_details.id))
@@ -179,10 +213,10 @@ utilsModule.factory('syncService', ['$rootScope', '$http', 'localstorage', '$cor
     return true;
   };
 
-  syncService.logout = function() {
+  AppService.logout = function() {
     var login_details = {};
     localstorage.setObject("login_details", login_details);
   };
 
-  return syncService;
+  return AppService;
 }]);

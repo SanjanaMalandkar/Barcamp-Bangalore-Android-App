@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils'])
 
-.run(function($ionicPlatform, $rootScope, syncService) {
+.run(function($ionicPlatform, $rootScope, AppService) {
   $ionicPlatform.ready(function() {
 
     // Enable to debug issues.

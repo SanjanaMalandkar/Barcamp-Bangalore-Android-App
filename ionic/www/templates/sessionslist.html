@@ -13,8 +13,8 @@
       <a class="item positive-bg" ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">
         <div class="row">
           <div class="col-60 text-left">
-            <h2 class="session-title">
-              {{session.title}}
+            <h2 class="session-title" ng-bind-html="session.title">
+              <!-- {{session.title}} -->
             </h2>
           </div>
           <!--

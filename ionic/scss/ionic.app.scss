@@ -18,10 +18,12 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
+
 $stable:                          #E5E5E5 !default;
 $positive:                        #96C3D8 !default;
 $energized:                       #FC922E !default;
 $assertive:                       #F45668 !default;
+
 
 $font-family-base: "Roboto", sans-serif !default;
 
@@ -56,7 +58,11 @@ $font-family-base: "Roboto", sans-serif !default;
 
 .slot-name {
   padding-left : 16px;
-  font-weight: bold;
+  /*font-weight: bold;*/
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
 }
 
 .bar-icons {

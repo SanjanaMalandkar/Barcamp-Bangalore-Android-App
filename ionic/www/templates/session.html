@@ -5,12 +5,12 @@
 
       <div class="item item-avatar" ng-style="{'background-color' : '{{session.color}}' }">
         <img src="{{session.photo}}">
-        <h2>{{ session.title }}</h2>
+        <h2 ng-bind-html="session.title"></h2>
         <p>{{ session.location }} </p>
       </div>
 
       <div class="item item-body">
-        <p ng-bind-html= "session.description">
+        <p ng-bind-html="session.description">
 
         </p>
         <p>

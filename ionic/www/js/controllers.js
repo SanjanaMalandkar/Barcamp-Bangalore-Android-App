@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, localstorage, syncService, $state) {
+.controller('AppCtrl', function($scope, $rootScope, $cordovaSocialSharing, $timeout, $cordovaInAppBrowser, $window, localstorage, AppService, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -137,16 +137,16 @@ angular.module('starter.controllers', [])
   };
 
   $scope.isAuthenticated = function() {
-    return syncService.isAuthenticated();
+    return AppService.isAuthenticated();
   };
 
   $scope.logout = function() {
-  syncService.logout();
+  AppService.logout();
   };
 
 })
 
-.controller('HomeCtrl', function($scope, $rootScope, $http, syncService, localstorage, $ionicLoading) {
+.controller('HomeCtrl', function($scope, $rootScope, $http, AppService, localstorage, $ionicLoading) {
 
   $scope.errorData = false;
 
@@ -161,19 +161,19 @@ angular.module('starter.controllers', [])
   };
 
   //var localData = localstorage.getObject("localData");
-  var localStorage = localstorage.getObject("localData");
-  console.log(localStorage);
+  //var localStorage = localstorage.getObject("localData");
+  //console.log(localStorage);
 
   // get local data first if present
-  $rootScope.data = localStorage["data"];
-  $scope.data = $rootScope.data;
+  //$rootScope.data = localStorage["data"];
+  $scope.data = AppService.getDataLocal();
 
   // seek data from the server.
   $ionicLoading.show({
       template: 'Getting sessions ...'
     });
 
-  var getDataAsync = syncService.getData();
+  var getDataAsync = AppService.getDataServer();
    getDataAsync.then(
     function success(message) {
       console.log("session data obtained");
@@ -188,11 +188,10 @@ angular.module('starter.controllers', [])
       if(!$rootScope.data) {
         $scope.errorData = true;
       }
-
     }
   );
 /*
-  var userSessionAsync = syncService.getUserSessions();
+  var userSessionAsync = AppService.getUserSessions();
   userSessionAsync.then(
     function success(message) {
       console.log("user sessions obtained");
@@ -204,41 +203,29 @@ angular.module('starter.controllers', [])
   */
   /*
   if (angular.isUndefined(localData["date"])) {
-    $scope.getData();
+    $scope.getDataServer();
   } else {
     }
   */
 
 })
 
-.controller('SlotCtrl', function($scope, $stateParams, $rootScope) {
+.controller('SlotCtrl', function($scope, $stateParams, AppService) {
 
-  //console.log($rootScope.data);
+  var slot = AppService.getSlot($stateParams.slotId);
 
-  if (angular.isUndefined( $rootScope.data['slots'][$stateParams.slotId])) {
+  if (angular.isUndefined(slot)) {
     console.log('No slot id');
     return;
   }
 
-  var slotName = $rootScope.data['slots'][$stateParams.slotId]['name']
-  var slotType = $rootScope.data['slots'][$stateParams.slotId]['type']
-  var slotId = $rootScope.data['slots'][$stateParams.slotId]['id']
-  var startTime = $rootScope.data['slots'][$stateParams.slotId]['startTime']
-  var endTime = $rootScope.data['slots'][$stateParams.slotId]['endTime']
-
-  console.log('Slot controller');
-  console.log('Slot details: slot id: ' + slotId + ' Name:' + slotName + ' Type:' + slotType + ' Start time:' + startTime + ' End time:' + endTime);
-
-  var slot = $rootScope.data['slots'][$stateParams.slotId];
   if (slot['type'] == 'session') {
     $scope.startTime = slot.startTime;
     $scope.endTime = slot.endTime;
     $scope.slotName = slot.name;
-    $scope.sessions = $rootScope.data['slots'][$stateParams.slotId]['sessions'];
+    $scope.sessions = slot['sessions'];
   }
   $scope.slotId = $stateParams.slotId
-  console.log("SlotCtrl = " + $scope.slotId);
-
 })
 
 .controller('ShareCtrl', function($scope, $cordovaSocialSharing) {
@@ -254,25 +241,11 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing, $rootScope) {
-  //console.log('Single session controller')
-  //console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
+.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing, AppService) {
+  console.log('Single session controller')
+  console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
   //console.log(data['slots'][3]);
-  var sessions = $rootScope.data['slots'][$stateParams.slotId]['sessions'];
-  var iCount = 0;
-  for (; iCount < sessions.length; iCount++) {
-    if (sessions[iCount].id == $stateParams.sessionId) {
-      break;
-    }
-    //console.log(iCount);
-  }
-  console.log(iCount);
-
-  if (iCount < sessions.length) {
-    $scope.session = $rootScope.data['slots'][$stateParams.slotId]['sessions'][iCount];
-    $scope.slotId = $stateParams.slotId;
-    //console.log($scope);
-  }
+  $scope.session = AppService.getSession($stateParams.slotId, $stateParams.sessionId);
 
   $scope.shareSession = function() {
     $cordovaSocialSharing
@@ -284,88 +257,14 @@ angular.module('starter.controllers', [])
       });
   };
 
-
-  /*
-  .controller('AppCtrl', function($scope, $cordovaSocialSharing, $timeout) {
-
-    // With the new view caching in Ionic, Controllers are only called
-    // when they are recreated or on app start, instead of every page change.
-    // To listen for when this page is active (for example, to refresh data),
-    // listen for the $ionicView.enter event:
-    //$scope.$on('$ionicView.enter', function(e) {
-    //});
-
-
-    $scope.doShare = function() {
-      console.log('in doShare method')
-      var message = "I'm at #barcampblr. Looking forward to it!"
-      $cordovaSocialSharing
-      .share(message, null, null, null) // Share via native share sheet
-      .then(function(result) {
-        console.log('Shared!')
-      }, function(err) {
-        console.log('Error')
-      });
-    };
-  */
-
 })
 
 .controller('VenueCtrl', function($scope) {})
 
 .controller('VenueMapCtrl', function($scope) {})
 
-.controller('AboutCtrl', function($scope) {
+.controller('AboutCtrl', function($scope) {})
 
-})
+.controller('LoginCtrl', function($scope) {})
 
-.controller('LoginCtrl', function($scope) {
-
-})
-
-.controller('TweetCtrl', function($scope, $cordovaInAppBrowser) {
-
-
-  /*
-
-    var options = {
-          location: 'yes',
-          clearcache: 'no',
-          toolbar: 'yes'
-        };
-
-        $cordovaInAppBrowser.open('https://twitter.com/search?q=barcampbng%20OR%20%22barcamp%20bangalore%22%20OR%20%23barcampblr%20OR%20barcampblr', '_blank', options)
-          .then(function(event) {
-            // success
-          })
-          .catch(function(event) {
-            // error
-          });
-  */
-  /*
-    $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event){
-
-    });
-
-    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
-      // insert CSS via code / file
-      $cordovaInAppBrowser.insertCSS({
-        code: 'body {background-color:blue;}'
-      });
-
-      // insert Javascript via code / file
-      $cordovaInAppBrowser.executeScript({
-        file: 'script.js'
-      });
-    });
-
-    $rootScope.$on('$cordovaInAppBrowser:loaderror', function(e, event){
-
-    });
-
-    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
-
-    });
-*/
-
-});
+.controller('TweetCtrl', function($scope, $cordovaInAppBrowser) {});

@@ -11,16 +11,16 @@
         <a ng-if="slot.type != 'fixed'" class="slot item" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
           <!--  to {{slot.endTime}} - -->
           <div class="rotate"> {{ slot.startTime }} </div>
-          <span class="slot-name">
+          <div class="slot-name">
             {{slot.name}}
-          </span>
+          </div>
         </a>
         <div ng-if="slot.type == 'fixed'" class="slot item" ng-class="getItemColor(slot)">
           <!--  to {{slot.endTime}} - -->
           <div class="rotate"> {{ slot.startTime }} </div>
-          <h2 class="slot-name">
+          <div class="slot-name">
             {{slot.name}}
-          </h2>
+          </div>
         </div>
       </div>
     </ul>
