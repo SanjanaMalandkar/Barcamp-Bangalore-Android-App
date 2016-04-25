@@ -10,6 +10,23 @@
         </span>
       </div>
 
+      <div class="row positive-bg" ng-if="isFixed()">
+        <div class="col col-20">
+        </div>
+        <div class="col col-80">
+          {{ description }}
+        </div>
+      </div>
+
+      <div class="row positive-bg" ng-if="isSessionNotDecided()">
+        <div class="col col-20">
+        </div>
+        <div class="col col-80">
+          {{ status_message }}
+        </div>
+      </div>
+
+
       <a class="item positive-bg" ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">
         <div class="row">
           <div class="col-60 text-left">
@@ -27,6 +44,7 @@
           </div>
         </div>
       </a>
+
     </ul>
 
   </ion-content>

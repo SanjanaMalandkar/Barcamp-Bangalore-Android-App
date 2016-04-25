@@ -1,6 +1,56 @@
 <ion-view view-title="Session Details">
   <ion-content>
 
+    <div class="row energized-bg">
+      <div class="col col-20">
+        <div class="item-avatar">
+          <img src="{{session.photo}}">
+        </div>
+      </div>
+      <div class="col col-80">
+        <h3 ng-bind-html="session.title"></h3>
+        <p>{{ session.presenter }} </p>
+      </div>
+    </div>
+    <div class="row positive-bg">
+      <div class="col col-20">
+      </div>
+      <div class="col col-80">
+        <p ng-bind-html="session.description">
+        </p>
+      </div>
+    </div>
+    <div class="row energized-bg">
+      <div class="col col-20">
+      </div>
+      <div class="col col-80">
+        <p>
+        <b> WHEN&nbsp;&nbsp;  : {{ session.time }} </b>
+        </p>
+        <p>
+        <b> WHERE  : {{ session.location }} </b>
+        </p>
+      </div>
+    </div>
+    <div class="row positive-bg">
+      <div class="col col-20">
+      </div>
+      <div class="col col-80">
+        <div class="row">
+          <div class="col">
+            <a ng-click="attendSession()">
+              <img class="button-icon" src="img/attending.png"></img>
+            </a>
+          </div>
+          <div class="col">
+            <a ng-click="shareSession()">
+              <img class="button-icon" src="img/share.png"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--
     <div class="list card">
 
       <div class="item item-avatar" ng-style="{'background-color' : '{{session.color}}' }">
@@ -10,9 +60,7 @@
       </div>
 
       <div class="item item-body">
-        <p ng-bind-html="session.description">
 
-        </p>
         <p>
 
           <div class="row">
@@ -25,6 +73,7 @@
       </div>
 
     </div>
+  -->
     <!--
    <h2>{{session.title}}</h2><br/>
    <div id="session-details">{{session.description}}

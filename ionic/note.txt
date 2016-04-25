@@ -6,6 +6,8 @@ http://barcampbangalore.org/bcb/wp-android_helper.php?action=setuserdata&userid=
 
 https://barcampbangalore.org/bcb/wp-android_helper.php?action=getuserdata&userid=eswarm&userkey=8kukfo7ctsf76bng1f5jbuqcq5
 
+http://barcampbangalore.org/bcb/wp-android_helper.php?action=setuserdata&userid=eswarm&userkey=8kukfo7ctsf76bng1f5jbuqcq5&sessionid=5852&isattending=true
+
 $(".universal-search-users").remove();
 $(".reload-box").remove();
 

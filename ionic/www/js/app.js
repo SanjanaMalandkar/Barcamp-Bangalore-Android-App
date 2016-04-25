@@ -4,19 +4,36 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils'])
+angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils', 'ngMockE2E', 'mockData'])
 
-.run(function($ionicPlatform, $rootScope, AppService) {
+.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBackend, $state) {
+
+
+//  $httpBackend.whenGET('https://barcampbangalore.org/bcb/schadmin/android.json').respond(
+//    mockData.getSessionDataSuccess()
+//  );
+
+//  $httpBackend.whenGET(/https\:\/\/barcampbangalore.org\/bcb\/wp-android_helper\.php\?action=getuserdata.*/).respond(
+//   mockData.getUserDataSuccess()
+//  );
+
+  $httpBackend.whenGET(/.*/).passThrough(); // Requests for template are handled by the real
+
   $ionicPlatform.ready(function() {
 
-    // Enable to debug issues.
+      // Enable to debug issues.
       // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+      $rootScope.$on('$cordovaLocalNotification:click', function(event, notification, state) {
+        $state.go("app.session", {slotId:AppService.getSlotIdFromSessionId(notification.id) , sessionId:notification.id});
+      });
 
       var notificationOpenedCallback = function(jsonData) {
         console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
-        //if(jsonData.title.toLowerCase() === "sessions updated") {
-          $rootScope.$broadcast('app:notification', {data:jsonData});
-        //}
+        $rootScope.$broadcast('app:notification', {data:jsonData});
+        if(jsonData.title.toLowerCase() === "sessions updated") {
+          AppService.getDataServer();
+        }
       };
 
       window.plugins.OneSignal.init("785e0c26-f6e8-419d-adec-6821366ac4a0",
@@ -50,8 +67,6 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
-
 
   });
 })

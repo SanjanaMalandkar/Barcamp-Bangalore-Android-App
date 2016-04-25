@@ -8,19 +8,20 @@
 
     <ul class="list">
       <div ng-repeat="slot in data.slots">
-        <a ng-if="slot.type != 'fixed'" class="slot item" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
-          <!--  to {{slot.endTime}} - -->
+        <a class="slot item" href="#/app/slots/{{$index}}" ng-class="getItemColor(slot)">
           <div class="rotate"> {{ slot.startTime }} </div>
           <div class="slot-name">
             {{slot.name}}
           </div>
         </a>
+        <!--
+        ng-if="slot.type != 'fixed'"
         <div ng-if="slot.type == 'fixed'" class="slot item" ng-class="getItemColor(slot)">
-          <!--  to {{slot.endTime}} - -->
           <div class="rotate"> {{ slot.startTime }} </div>
           <div class="slot-name">
             {{slot.name}}
           </div>
+        -->
         </div>
       </div>
     </ul>

@@ -8,6 +8,18 @@ angular.module('starter.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+  $rootScope.$on("app:notification", function(data) {
+    console.log("app:notification");
+    console.log(data);
+  });
+
+  $rootScope.$on("app:logged_in", function(data) {
+      console.log("app:logged_in");
+      AppService.getUserSessionsServer()
+      .then(function success(response) {AppService.addNotificationsForSessions()},
+        function failed(response) { console.log("Failed to get the user sessions"); } );
+  });
+
 
   $scope.doShare = function() {
     console.log('in doShare method')
@@ -15,9 +27,9 @@ angular.module('starter.controllers', [])
     $cordovaSocialSharing
       .share(message, null, null, null) // Share via native share sheet
       .then(function(result) {
-        console.log('Shared!')
+        console.log('Shared!');
       }, function(err) {
-        console.log('Error')
+        console.log('Error');
       });
   };
 
@@ -58,15 +70,8 @@ angular.module('starter.controllers', [])
     console.log("urlChanged " + url);
     if(isValid(url)) {
       var login_details = getLoginParams(url);
-      //alert(login_details.user_name + " " + login_details.id);
-      /*
-      $state.transitionTo($state.current, $state.params, {
-        reload: true,
-        inherit: false,
-        notify: true
-        });
-        */
       localstorage.setObject("login_details", login_details);
+      $rootScope.$broadcast("app:logged_in", {});
       $cordovaInAppBrowser.close();
     }
   };
@@ -190,8 +195,13 @@ angular.module('starter.controllers', [])
       }
     }
   );
+
+  AppService.getUserSessionsServer()
+  .then(function success(response) {AppService.addNotificationsForSessions()},
+    function failed(response) { console.log("Failed to get the user sessions"); } );
+
 /*
-  var userSessionAsync = AppService.getUserSessions();
+  var userSessionAsync = AppService.getUserSessionsServer();
   userSessionAsync.then(
     function success(message) {
       console.log("user sessions obtained");
@@ -219,13 +229,28 @@ angular.module('starter.controllers', [])
     return;
   }
 
-  if (slot['type'] == 'session') {
+  //if (slot['type'] == 'session') {
     $scope.startTime = slot.startTime;
     $scope.endTime = slot.endTime;
     $scope.slotName = slot.name;
     $scope.sessions = slot['sessions'];
+    $scope.description = slot['description'];
+  //}
+  $scope.slotId = $stateParams.slotId;
+
+  $scope.isSessionNotDecided = function() {
+    if(slot.type.toLowerCase() === "session" && data_status === "slots_undecided")
+      return true;
+    return false;
+  };
+
+  $scope.isFixed = function() {
+    if(slot.type.toLowerCase() === "fixed") {
+      return true;
+    return false;
+    }
   }
-  $scope.slotId = $stateParams.slotId
+
 })
 
 .controller('ShareCtrl', function($scope, $cordovaSocialSharing) {
@@ -241,7 +266,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing, AppService) {
+.controller('SessionCtrl', function($scope, $sce, $stateParams, $cordovaSocialSharing, AppService, $http, $ionicLoading, $ionicPopup) {
   console.log('Single session controller')
   console.log('Slot id: ' + $stateParams.slotId + ' Scope id:' + $stateParams.sessionId );
   //console.log(data['slots'][3]);
@@ -255,6 +280,37 @@ angular.module('starter.controllers', [])
       }, function(err) {
         console.log('Error')
       });
+  };
+
+  $scope.showAlert = function(title, message) {
+     var alertPopup = $ionicPopup.alert({
+       title: title,
+       template: message
+     });
+
+     /*
+     alertPopup.then(function(res) {
+       console.log('Alert done');
+     });
+     */
+   };
+
+  $scope.attendSession = function() {
+    $ionicLoading.show({
+      template: 'Updating ...'
+      });
+
+    AppService.setUserSessionAttending($scope.session.id).then(
+      function() {
+        $ionicLoading.hide();
+        $scope.showAlert("Session added", $scope.session.title);
+        AppService.addNotification($scope.session.id);
+      },
+      function() {
+        $ionicLoading.hide();
+        $scope.showAlert("Error", "Sorry, error in adding.");
+      }
+    )
   };
 
 })
