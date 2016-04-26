@@ -3556,7 +3556,7 @@ ion-infinite-scroll {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: #E5E5E5;
   overflow: hidden; }
 
 .view-container {
@@ -9786,3 +9786,16 @@ a.button {
 .button-icon {
   max-width: 64px;
   max-height: 64px; }
+
+.session-description {
+  font-size: 18px;
+  min-height: 200px;
+  padding: 20px; }
+
+.session-not-set {
+  font-size: 18px;
+  min-height: 200px;
+  padding: 20px; }
+
+.ion-content {
+  background-image: url(img\coffee.jpg); }

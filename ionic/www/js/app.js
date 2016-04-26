@@ -4,12 +4,18 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils', 'ngMockE2E', 'mockData'])
+var starter = angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils', 'ngMockE2E', 'mockData'])
 
-.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBackend, $state) {
+var prod_url = 'https://barcampbangalore.org/bcb/schadmin/test.json';
+var test_url = 'http://192.168.2.2:8080/';
+
+starter.constant('GC', {JSON_URL : test_url
+});
+
+starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBackend, $state, GC) {
 
 
-//  $httpBackend.whenGET('https://barcampbangalore.org/bcb/schadmin/android.json').respond(
+//  $httpBackend.whenGET(GC.JSON_URL).respond(
 //    mockData.getSessionDataSuccess()
 //  );
 
@@ -29,11 +35,27 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
       });
 
       var notificationOpenedCallback = function(jsonData) {
+
         console.log('didReceiveRemoteNotificationCallBack: ' + JSON.stringify(jsonData));
-        $rootScope.$broadcast('app:notification', {data:jsonData});
-        if(jsonData.title.toLowerCase() === "sessions updated") {
+
+        $rootScope.$broadcast('app:notification', jsonData);
+
+        var title = jsonData["additionalData"]["title"];
+        var message = jsonData["message"];
+
+        if(title.toLowerCase() === "sessions updated") {
+          console.log("getting the server data");
           AppService.getDataServer();
+
+          console.log("getting the user sessions");
+          AppService.getUserSessionsServer()
+          .then(function success(response) {AppService.addNotificationsForSessions()},
+            function failed(response) { console.log("Failed to get the user sessions"); } );
         }
+
+        console.log(" title " + title + " message " + message);
+        AppService.addUpdate(title, message);
+
       };
 
       window.plugins.OneSignal.init("785e0c26-f6e8-419d-adec-6821366ac4a0",
@@ -149,6 +171,16 @@ angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 
         'menuContent': {
           templateUrl: 'templates/about.html',
           controller: 'AboutCtrl'
+        }
+       }
+    })
+
+    .state('app.updates', {
+      url: '/updates',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/update.html',
+          controller: 'UpdateCtrl'
         }
        }
     })

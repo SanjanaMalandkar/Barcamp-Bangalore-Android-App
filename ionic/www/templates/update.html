@@ -1,0 +1,13 @@
+<ion-view view-title="Updates">
+  <ion-content>
+    <ul class="list">
+      <div ng-repeat="update in updates">
+        <div class="item positive-bg">
+          {{update.title}}
+          <br />
+          {{ update.message }}
+        </div>
+      </div>
+    </ul>
+  </ion-content>
+</ion-view>

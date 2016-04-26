@@ -13,18 +13,18 @@
       <div class="row positive-bg" ng-if="isFixed()">
         <div class="col col-20">
         </div>
-        <div class="col col-80">
+        <div class="col col-80 session-description">
           {{ description }}
         </div>
       </div>
 
-      <div class="row positive-bg" ng-if="isSessionNotDecided()">
-        <div class="col col-20">
+        <div class="row positive-bg" ng-if="isSessionNotDecided()">
+          <div class="col col-20">
+          </div>
+          <div class="col col-80 session-not-set">
+              {{ status_message }}
+          </div>
         </div>
-        <div class="col col-80">
-          {{ status_message }}
-        </div>
-      </div>
 
 
       <a class="item positive-bg" ng-repeat="session in sessions" href="#/app/slots/{{slotId}}/{{session.id}}">

@@ -17,13 +17,13 @@ utilsModule.factory('localstorage', ['$window', function($window) {
   }
 }]);
 
-utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q) {
+utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cordovaLocalNotification', '$q', 'GC', function($rootScope, $http, localstorage, $cordovaLocalNotification, $q, GC) {
   var AppService = {};
 
   function getJSON(deferred) {
     $http({
       method: 'GET',
-      url: 'https://barcampbangalore.org/bcb/schadmin/android.json'
+      url: GC.JSON_URL
     }).then(function successCallback(response) {
       console.log("Got the session data");
 
@@ -68,7 +68,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
   // of the whole data.
   AppService.checkModified = function(deferred) {
     $http.head(
-      'https://barcampbangalore.org/bcb/schadmin/android.json'
+      GC.JSON_URL
     ).then(function successCallback(response) {
       console.log("Got the headers");
       console.log(response.headers());
@@ -203,6 +203,8 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
 
   AppService.getUserSessionsServer = function() {
 
+    console.log("getUserSessionsServer");
+
     var deferred = $q.defer();
     var login_details = localstorage.getObject("login_details");
     if (this.isAuthenticated() == false)
@@ -210,16 +212,41 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
 
     url_user = 'https://barcampbangalore.org/bcb/wp-android_helper.php?action=getuserdata&' + 'userid=' + login_details.user_name + '&userkey=' + login_details.id;
 
+    console.log("getUserSessionsServer url " + url_user);
+
+    function appendTransform(defaults, transform) {
+
+      // We can't guarantee that the default transformation is an array
+      defaults = angular.isArray(defaults) ? defaults : [defaults];
+
+      // Append the new transformation to the defaults
+      return defaults.concat(transform);
+    }
+
     $http({
       method: 'GET',
-      url: url_user
+      url: url_user,
+      transformResponse: function(value) { return value; }
     }).then(function successCallback(response) {
-        console.log("Got the data for user sessions " + response['data']['data']);
-        var data = response['data']['data'];
+
+        console.log("Response" + response + typeof(response));
+        console.log("Got the data for user sessions " + typeof(response.data));
+        console.log("Got the data for user sessions " + response.data);
+
+        var data = [];
+        try {
+        var sessions = eval(response.data);
+        console.log(sessions);
+        data = sessions;
+        }
+        catch(e) {
+            console.log( "Exception in user sessions" + e);
+        }
+
+        console.log("Sessions " + data);
         localstorage.setObject("user_sessions", data);
         deferred.resolve("got the sessions");
-        //var sessions = JSON.parse(data);
-        //addNotifications(sessions);
+
       },
       function errorCallback(response) {
         console.log("Error in getting the data " + response);
@@ -266,20 +293,25 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
     var m_str = startTime.substring(2);
     var hours = parseInt(h_str);
     var minutes = parseInt(m_str);
-    var barcamp_date = new Date(2016, 3, 30, hours, minutes, 0);
+    var barcamp_date = new Date(2016, 3, 27, hours, minutes, 0);
     //return 100;
     //var offset = barcamp_date.getTime() - now;
     //console.log( " getNotiTime " + offset)
     return barcamp_date;
   };
 
-  function scheduleNotification(time_offset, id, title, description) {
-    console.log("scheduleNotification " + time_offset);
+  function scheduleNotification(time, id, title, description) {
+    if(time < Date.now())
+      {
+        console.log("Past are bygone");
+        return;
+      }
+    console.log("scheduleNotification " + time);
     $cordovaLocalNotification.schedule({
       id: id,
       title: title,
       text: description,
-      at: time_offset
+      at: time
     }).then(function(result) {});
   };
 
@@ -316,7 +348,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
       }
       var time = getNotiTime(AppService.getStartTimeFromSession(user_sessions[i].id));
       if (time >= 0)
-        scheduleNotification(time_offset, us.id, us.title, us.location + " is hosting " + us.title + " by " + us.presenter);
+        scheduleNotification(time, us.id, us.title, us.location + " is hosting " + us.title + " by " + us.presenter);
     }
 
   };
@@ -330,9 +362,9 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
       console.log("No session found for " + sessionId);
       return;
     }
-    var time_offset = getNotiTime(AppService.getStartTimeFromSession(sessionId));
-    if (time_offset >= 0)
-      scheduleNotification(time_offset, us.id, us.title, us.location + " is hosting " + us.title + " by " + us.presenter);
+    var time = getNotiTime(AppService.getStartTimeFromSession(sessionId));
+    if (time >= 0)
+      scheduleNotification(time, us.id, us.title, us.location + " is hosting " + us.title + " by " + us.presenter);
   };
 
 
@@ -349,7 +381,19 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
     localstorage.setObject("login_details", login_details);
   };
 
+  AppService.addUpdate = function(title, message) {
+    var updates = localstorage.getObject("updates");
+    if(isEmpty(updates)) {
+      updates = [];
+    }
+    updates.push({title : title , message : message});
+    localstorage.setObject("updates", updates);
+  };
 
+  AppService.getUpdates = function() {
+    var updates = localstorage.getObject("updates");
+    return updates;
+  };
 
   return AppService;
 }]);

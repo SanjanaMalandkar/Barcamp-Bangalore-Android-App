@@ -239,7 +239,7 @@ angular.module('starter.controllers', [])
   $scope.slotId = $stateParams.slotId;
 
   $scope.isSessionNotDecided = function() {
-    if(slot.type.toLowerCase() === "session" && data_status === "slots_undecided")
+    if(slot.type.toLowerCase() === "session" && $scope.data_status === "slots_undecided")
       return true;
     return false;
   };
@@ -323,4 +323,8 @@ angular.module('starter.controllers', [])
 
 .controller('LoginCtrl', function($scope) {})
 
-.controller('TweetCtrl', function($scope, $cordovaInAppBrowser) {});
+.controller('TweetCtrl', function($scope, $cordovaInAppBrowser) {})
+
+.controller('UpdateCtrl', function($scope, AppService) {
+  $scope.updates = AppService.getUpdates();
+});
