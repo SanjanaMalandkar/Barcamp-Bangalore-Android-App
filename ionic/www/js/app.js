@@ -6,10 +6,10 @@
 // 'starter.controllers' is found in controllers.js
 var starter = angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils', 'ngMockE2E', 'mockData'])
 
-var prod_url = 'https://barcampbangalore.org/bcb/schadmin/test.json';
+var prod_url = 'https://barcampbangalore.org/bcb/schadmin/android.json';
 var test_url = 'http://192.168.2.2:8080/';
 
-starter.constant('GC', {JSON_URL : test_url
+starter.constant('GC', {JSON_URL : prod_url
 });
 
 starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBackend, $state, GC) {
