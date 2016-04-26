@@ -58,8 +58,8 @@ starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBack
 
       };
 
-      window.plugins.OneSignal.init("785e0c26-f6e8-419d-adec-6821366ac4a0",
-                                     {googleProjectNumber: "432833479921"},
+      window.plugins.OneSignal.init("2792e7dc-0325-491e-9a97-0da17678d381",
+                                     {googleProjectNumber: "486916557852"},
                                      notificationOpenedCallback);
 
       // Show an alert box if a notification comes in when the user is in your app.
