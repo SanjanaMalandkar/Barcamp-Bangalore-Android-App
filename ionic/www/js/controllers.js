@@ -172,30 +172,48 @@ angular.module('starter.controllers', [])
 
   // get local data first if present
   //$rootScope.data = localStorage["data"];
-  $scope.data = AppService.getDataLocal();
+  $scope.data = AppService.getDataLocal()["data"];
 
+  if(!AppService.isEmpty($scope.data)) {
+    if ($scope.data["status"] !== "have stuff") {
+      $rootScope.data_status = "slots_undecided";
+      $rootScope.status_message = $scope.data["status"];
+    } else {
+      $rootScope.data_status = "slots_set";
+      $rootScope.status_message = $scope.data["status"];
+    }
+  }
+
+  //console.log(JSON.stringify($scope.data));
+
+  /*
   // seek data from the server.
   $ionicLoading.show({
       template: 'Getting sessions ...'
     });
+  */
 
-  var getDataAsync = AppService.getDataServer();
-   getDataAsync.then(
-    function success(message) {
-      console.log("session data obtained");
-      $scope.data = $rootScope.data;
-      $scope.success_message = message;
-      $ionicLoading.hide();
-    },
-    function failed(message) {
-      console.log("session data failed");
-      $scope.error_message = message;
-      $ionicLoading.hide();
-      if(!$scope.data) {
-        $scope.errorData = true;
-      }
-    }
-  );
+    $scope.$on('$ionicView.enter', function(e) {
+      console.log("Ionic view enter");
+      var getDataAsync = AppService.getDataServer();
+       getDataAsync.then(
+        function success(message) {
+          console.log("session data obtained");
+          $scope.data = AppService.getDataLocal()["data"];
+          $scope.success_message = message;
+          //$ionicLoading.hide();
+        },
+        function failed(message) {
+          console.log("session data failed");
+          $scope.error_message = message;
+          //$ionicLoading.hide();
+          if(!$scope.data) {
+            $scope.errorData = true;
+          }
+        }
+      );
+
+    });
 
   AppService.getUserSessionsServer()
   .then(function success(response) {AppService.addNotificationsForSessions()},
@@ -230,29 +248,29 @@ angular.module('starter.controllers', [])
     return;
   }
 
-  console.log(JSON.stringify(slot));
-
+  //console.log(JSON.stringify(slot));
   //if (slot['type'] == 'session') {
-    $scope.startTime = slot.startTime;
-    $scope.endTime = slot.endTime;
-    $scope.slotName = slot.name;
-    $scope.sessions = slot['sessions'];
-    $scope.description = slot['description'];
+  $scope.startTime = slot.startTime;
+  $scope.endTime = slot.endTime;
+  $scope.slotName = slot.name;
+  $scope.sessions = slot['sessions'];
+  $scope.description = slot['description'];
   //}
   $scope.slotId = $stateParams.slotId;
 
   $scope.isSessionNotDecided = function() {
-    if(slot.type.toLowerCase() === "session" && $scope.data_status === "slots_undecided")
+    if (slot.type.toLowerCase() === "session" && $scope.data_status === "slots_undecided") {
       return true;
+    }
     return false;
   };
 
   $scope.isFixed = function() {
-    if(slot.type.toLowerCase() === "fixed") {
+    if (slot.type.toLowerCase() === "fixed") {
       return true;
-    return false;
     }
-  }
+    return false;
+  };
 
 })
 

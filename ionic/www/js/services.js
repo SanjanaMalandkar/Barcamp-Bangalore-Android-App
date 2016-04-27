@@ -63,7 +63,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
   };
 
 
-  /*
+
   // Not using this currently, otherwise would just retrieve the header instead
   // of the whole data.
   AppService.checkModified = function(deferred) {
@@ -73,22 +73,28 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
       console.log("Got the headers");
       console.log(response.headers());
       var resp_date = new Date(response.headers("Last-Modified"));
+      console.log("response date " + resp_date);
       var localData = localstorage.getObject("localData");
       console.log(typeof localData["date"]);
+      //console.log(JSON.stringify(localData));
       var local_date = new Date(localData["date"]);
-      if (resp_date.getTime() > local_date.getTime()) {
-        console.log("getting the data again");
-        getDataServer(deferred);
+      if (angular.isUndefined(local_date) || AppService.isEmpty(localData) || resp_date.getTime() > local_date.getTime()) {
+        console.log("getting the data from server .. ");
+        getJSON(deferred);
+      }
+      else {
+        console.log("data is the same");
+        deferred.resolve("Data is the same");
       }
     }, function errorCallback(response) {
         deferred.reject("Sorry, unable to get the data " + response);
     });
   };
-  */
+
 
   AppService.getDataServer = function() {
     var deferred = $q.defer();
-    getJSON(deferred);
+    AppService.checkModified(deferred);
     return deferred.promise;
   };
 
@@ -315,7 +321,9 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
     }).then(function(result) {});
   };
 
-  function isEmpty(obj) {
+ AppService.isEmpty = function(obj) {
+    if(angular.isUndefined(obj) || obj === null)
+        return true;
     return (Object.keys(obj).length === 0 && JSON.stringify(obj) === JSON.stringify({}))
   }
 
@@ -342,7 +350,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
       //console.log(session);
       var us = AppService.getSessionFromId(user_sessions[i].id);
       console.log(us);
-      if(isEmpty(us)) {
+      if(AppService.isEmpty(us)) {
         console.log("No session found for " + user_sessions[i].id);
         continue;
       }
@@ -358,7 +366,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
     console.log("Adding notification for sessionId " + sessionId);
     var us = AppService.getSessionFromId(sessionId);
     console.log(us);
-    if(isEmpty(us)) {
+    if(AppService.isEmpty(us)) {
       console.log("No session found for " + sessionId);
       return;
     }
@@ -383,7 +391,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
 
   AppService.addUpdate = function(title, message) {
     var updates = localstorage.getObject("updates");
-    if(isEmpty(updates)) {
+    if(AppService.isEmpty(updates)) {
       updates = [];
     }
     updates.push({title : title , message : message});

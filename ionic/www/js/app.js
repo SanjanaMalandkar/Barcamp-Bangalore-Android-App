@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-var starter = angular.module('starter', ['ionic','ionic.service.core', 'starter.controllers', 'ngCordova', 'utils', 'ngMockE2E', 'mockData'])
+var starter = angular.module('starter', ['ionic','starter.controllers', 'ngCordova', 'utils'])
 
 var prod_url = 'https://barcampbangalore.org/bcb/schadmin/android.json';
 var test_url = 'http://192.168.2.2:8080/';
@@ -12,7 +12,7 @@ var test_url = 'http://192.168.2.2:8080/';
 starter.constant('GC', {JSON_URL : prod_url
 });
 
-starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBackend, $state, GC) {
+starter.run(function($ionicPlatform, $rootScope, AppService, $state, GC) {
 
 
 //  $httpBackend.whenGET(GC.JSON_URL).respond(
@@ -23,7 +23,7 @@ starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBack
 //   mockData.getUserDataSuccess()
 //  );
 
-  $httpBackend.whenGET(/.*/).passThrough(); // Requests for template are handled by the real
+  //$httpBackend.whenGET(/.*/).passThrough(); // Requests for template are handled by the real
 
   $ionicPlatform.ready(function() {
 
@@ -117,7 +117,8 @@ starter.run(function($ionicPlatform, $rootScope, AppService, mockData, $httpBack
       views: {
         'menuContent': {
           templateUrl: 'templates/home.html',
-          controller: 'HomeCtrl'
+          controller: 'HomeCtrl',
+          cache : false
         }
       }
     })
