@@ -293,7 +293,7 @@ utilsModule.factory('AppService', ['$rootScope', '$http', 'localstorage', '$cord
     var m_str = startTime.substring(2);
     var hours = parseInt(h_str);
     var minutes = parseInt(m_str);
-    var barcamp_date = new Date(2016, 3, 27, hours, minutes, 0);
+    var barcamp_date = new Date(2016, 3, 30, hours, minutes, 0);
     //return 100;
     //var offset = barcamp_date.getTime() - now;
     //console.log( " getNotiTime " + offset)

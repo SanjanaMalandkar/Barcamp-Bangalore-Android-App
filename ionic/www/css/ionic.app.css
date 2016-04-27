@@ -15,6 +15,15 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
+/*
+$stable:                          rgb(229,229,229) !default;
+$positive:                        rgba(150,195,216,0.8) !default;
+$energized:                       rgba(252,146,46,0.8) !default;
+$assertive:                       rgba(244,86,104,0.8) !default;
+
+$base-background-color:            #E5E5E5 !default;
+$base-color:                        #FFFFFF !default;
+*/
 /*!
   Ionicons, v2.0.1
   Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
@@ -3556,7 +3565,7 @@ ion-infinite-scroll {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #E5E5E5;
+  background-color: #fff;
   overflow: hidden; }
 
 .view-container {
@@ -9797,5 +9806,11 @@ a.button {
   min-height: 200px;
   padding: 20px; }
 
-.ion-content {
-  background-image: url(img\coffee.jpg); }
+/*
+ion-content {
+  background-image: url(../img/coffee.jpg);
+  background-size: cover;
+}
+*/
+.transparent-bg {
+  background-color: rgba(240, 83, 83, 0.1); }

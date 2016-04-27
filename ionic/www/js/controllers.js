@@ -159,6 +159,7 @@ angular.module('starter.controllers', [])
     if (slot.type == "fixed" && slot.name == "Techlash") {
       return "assertive-bg fixed-slot";
     } else if (slot.type == "fixed") {
+      //return "transparent-bg fixed-slot";
       return "energized-bg fixed-slot";
     } else {
       return "positive-bg";
@@ -190,7 +191,7 @@ angular.module('starter.controllers', [])
       console.log("session data failed");
       $scope.error_message = message;
       $ionicLoading.hide();
-      if(!$rootScope.data) {
+      if(!$scope.data) {
         $scope.errorData = true;
       }
     }
@@ -228,6 +229,8 @@ angular.module('starter.controllers', [])
     console.log('No slot id');
     return;
   }
+
+  console.log(JSON.stringify(slot));
 
   //if (slot['type'] == 'session') {
     $scope.startTime = slot.startTime;

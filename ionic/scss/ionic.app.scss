@@ -18,13 +18,20 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
-
 $stable:                          #E5E5E5 !default;
 $positive:                        #96C3D8 !default;
 $energized:                       #FC922E !default;
 $assertive:                       #F45668 !default;
 
+/*
+$stable:                          rgb(229,229,229) !default;
+$positive:                        rgba(150,195,216,0.8) !default;
+$energized:                       rgba(252,146,46,0.8) !default;
+$assertive:                       rgba(244,86,104,0.8) !default;
+
 $base-background-color:            #E5E5E5 !default;
+$base-color:                        #FFFFFF !default;
+*/
 
 $font-family-base: "Roboto", sans-serif !default;
 
@@ -113,6 +120,13 @@ $font-family-base: "Roboto", sans-serif !default;
   padding : 20px;
 }
 
-.ion-content {
-  background-image: url(img\coffee.jpg)
+/*
+ion-content {
+  background-image: url(../img/coffee.jpg);
+  background-size: cover;
+}
+*/
+
+.transparent-bg {
+background-color: transparentize(#F05353, 0.9);
 }
