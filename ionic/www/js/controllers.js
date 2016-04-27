@@ -295,7 +295,7 @@ angular.module('starter.controllers', [])
 
   $scope.shareSession = function() {
     $cordovaSocialSharing
-      .share($scope.session.title, "Session at #barcampblr", null, $scope.session.permalink) // Share via native share sheet
+      .share($scope.session.title + " " + $scope.session.permalink, "Session at #barcampblr", null, $scope.session.permalink) // Share via native share sheet
       .then(function(result) {
         console.log('Shared!')
       }, function(err) {
