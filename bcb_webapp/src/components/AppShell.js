@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'react-router/lib/Link';
+import browserHistory from 'react-router/lib/browserHistory';
 //import {Layout, Header, Navigation, Content, Textfield, Drawer} from 'react-mdl';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -24,8 +25,19 @@ export default class AppShell extends React.Component {
 		this.handleClose = this.handleClose.bind(this);
 	}
 
+    onMyChildChanged(newState) {
+        console.log("newstate " + newState);
+    }
+
 	handleToggleDrawer() {
-		this.setState({open: !this.state.open});
+        if(this.state.canClose == false){
+		    this.setState({open: !this.state.open});
+        }
+        else {
+            console.log(this.state);
+            browserHistory.goBack();
+            this.setState({canClose: false});
+        }
 	}
 
 	handleRequestChange(open) {
@@ -38,21 +50,31 @@ export default class AppShell extends React.Component {
 		e.preventDefault();
 	}
 
+    componentWillUpdate(nextProps, nextState){
+        console.log("component will update");
+        console.log(nextProps);
+        console.log(nextState);
+        if ( nextProps.children.props.route.path == "session/:slot/:session"){
+            nextState.canClose = true;
+        }
+    }
+
 	render() {
 		return (
 			<div>
 				<Drawer
-					docked={false}
 					width={200}
+					docked={false}
 					open={this.state.open}
 					onRequestChange={this.handleRequestChange}
 					>
-					<MenuItem primaryText="Users" leftIcon={<ContentLink/>} containerElement={<Link to="/users"/>} onTouchTap={this.handleToggleDrawer}/>
-					<MenuItem primaryText="Contact" leftIcon={<ContentLink/>} containerElement={<Link to="/contact"/>} onTouchTap={this.handleToggleDrawer}/>
+                    <MenuItem primaryText="Menu Options" />
+					<MenuItem primaryText="About" leftIcon={<ContentLink/>} containerElement={<Link to="/users"/>} onTouchTap={this.handleToggleDrawer}/>
+					<MenuItem primaryText="Notifications" leftIcon={<ContentLink/>} containerElement={<Link to="/contact"/>} onTouchTap={this.handleToggleDrawer}/>
 					<MenuItem primaryText="Github" leftIcon={<ContentLink/>} target="_blank" href="https://github.com/" onTouchTap={this.handleToggleDrawer}/>
 				</Drawer>
 				<AppBar
-					title={this.state.title}
+					title={this.props.title}
 					onLeftIconButtonTouchTap={this.handleToggleDrawer}
                     iconElementLeft={ this.state.canClose == true ? <IconButton><NavigationClose /></IconButton> :<IconButton><Menu /></IconButton> }
 					iconClassNameRight="muidocs-icon-navigation-expand-more"
